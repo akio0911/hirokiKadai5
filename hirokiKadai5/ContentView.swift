@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var num1: Double?
     @State private var num2: Double?
     @State private var total: Double = 0
-    @State private var errorMessage: String?
+    @State private var errorMessage: String = ""
     @State private var isError: Bool = false
     
     var body: some View {
@@ -26,7 +26,7 @@ struct ContentView: View {
             }, label: { Text("計算") })
             .padding()
             .alert(isPresented: $isError) {
-                Alert(title: Text("課題5"), message: Text(errorMessage!), dismissButton: .default(Text("OK")))
+                Alert(title: Text("課題5"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
             
             Text("\(total)")
@@ -35,26 +35,26 @@ struct ContentView: View {
     }
     
     func divide() {
-        guard let _num1 = num1 else {
-            isError = true
-            errorMessage = "割る数を入力して下さい"
-            return
-        }
-        
-        guard let _num2 = num2 else {
+        guard let num1 = num1 else {
             isError = true
             errorMessage = "割られる数を入力して下さい"
             return
         }
         
-        if _num2 == 0 {
+        guard let num2 = num2 else {
+            isError = true
+            errorMessage = "割る数を入力して下さい"
+            return
+        }
+
+        guard num2 != 0 else {
             isError = true
             errorMessage = "割る数には0を入力しないで下さい"
             return
         }
         
         isError = false
-        total = _num1 / _num2
+        total = num1 / num2
     }
     
 }
